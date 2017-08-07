@@ -32,12 +32,12 @@ public class WorkingDayTemporalAdjusters {
         return temporal -> findIterate(temporal.minus(1, ChronoUnit.DAYS), this::isWeekEndOrHoliday, -1);
     }
 
-    public TemporalAdjuster nextWorkingDay(int workingDays){
-        return temporal -> findIterate(temporal.plus(workingDays, ChronoUnit.DAYS), this::isWorkingDay, 1);
+    public TemporalAdjuster nextWorkingDay(){
+        return temporal -> findIterate(temporal.plus(1, ChronoUnit.DAYS), this::isWorkingDay, 1);
     }
 
-    public TemporalAdjuster previousWorkingDay(int workingDays){
-        return temporal -> findIterate(temporal.minus(workingDays, ChronoUnit.DAYS), this::isWorkingDay, -1);
+    public TemporalAdjuster previousWorkingDay(){
+        return temporal -> findIterate(temporal.minus(1, ChronoUnit.DAYS), this::isWorkingDay, -1);
     }
 
     private Temporal findIterate(Temporal temporal, Predicate<Temporal> filter, int step) {
