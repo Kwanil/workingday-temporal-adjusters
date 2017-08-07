@@ -1,19 +1,19 @@
 package time;
 
-import java.time.DayOfWeek;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjuster;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class WorkingDayTemporalAdjusters {
-    private final List<DayOfWeek> weekEnds = Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
-    private final List<ChronoLocalDate> holidays = new ArrayList<>();
+    private final Holidays holidays;
 
     private WorkingDayTemporalAdjusters(Collection<? extends ChronoLocalDate> holidays) {
-        this.holidays.addAll(Objects.requireNonNull(holidays));
+        this.holidays = Holidays.of(holidays);
     }
 
     public static WorkingDayTemporalAdjusters onlyWeekEnd() {
@@ -25,44 +25,51 @@ public class WorkingDayTemporalAdjusters {
     }
 
     public TemporalAdjuster nextHoliday(){
-        return temporal -> findIterate(temporal.plus(1, ChronoUnit.DAYS), this::isWeekEndOrHoliday, 1);
+        return temporal -> findIterate(temporal.plus(1, ChronoUnit.DAYS), holidays::isWeekEndOrHoliday, Direction.NEXT);
     }
 
     public TemporalAdjuster previousHoliday(){
-        return temporal -> findIterate(temporal.minus(1, ChronoUnit.DAYS), this::isWeekEndOrHoliday, -1);
+        return temporal -> findIterate(temporal.minus(1, ChronoUnit.DAYS), holidays::isWeekEndOrHoliday, Direction.PREVIOUS);
+    }
+
+    public TemporalAdjuster nextOrSameHoliday(){
+        return temporal -> findIterate(temporal, holidays::isWeekEndOrHoliday, Direction.NEXT);
+    }
+
+    public TemporalAdjuster previousOrSameHoliday(){
+        return temporal -> findIterate(temporal, holidays::isWeekEndOrHoliday, Direction.PREVIOUS);
     }
 
     public TemporalAdjuster nextWorkingDay(){
-        return temporal -> findIterate(temporal.plus(1, ChronoUnit.DAYS), this::isWorkingDay, 1);
+        return temporal -> findIterate(temporal.plus(1, ChronoUnit.DAYS), holidays::isWorkingDay, Direction.NEXT);
     }
 
     public TemporalAdjuster previousWorkingDay(){
-        return temporal -> findIterate(temporal.minus(1, ChronoUnit.DAYS), this::isWorkingDay, -1);
+        return temporal -> findIterate(temporal.minus(1, ChronoUnit.DAYS), holidays::isWorkingDay, Direction.PREVIOUS);
     }
 
-    private Temporal findIterate(Temporal temporal, Predicate<Temporal> filter, int step) {
+    public TemporalAdjuster nextOrSameWorkingDay(){
+        return temporal -> findIterate(temporal, holidays::isWorkingDay, Direction.NEXT);
+    }
+
+    public TemporalAdjuster previousOrSameWorkingDay(){
+        return temporal -> findIterate(temporal, holidays::isWorkingDay, Direction.PREVIOUS);
+    }
+
+    private Temporal findIterate(Temporal temporal, Predicate<Temporal> filter, Direction direction) {
         Objects.requireNonNull(temporal);
-        for(Temporal t= temporal;; t=t.plus(step, ChronoUnit.DAYS)) {
+        for(Temporal t= temporal;; t=t.plus(direction.amount, ChronoUnit.DAYS)) {
             if(filter.test(t)) {
                 return t;
             }
         }
     }
 
-    boolean isWorkingDay(Temporal temporal) {
-        return !isWeekEndOrHoliday(temporal);
-    }
-
-    boolean isWeekEndOrHoliday(Temporal temporal){
-        return isWeekEnd(temporal) || isHoliday(temporal);
-    }
-
-    boolean isWeekEnd(Temporal temporal){
-        DayOfWeek dayOfWeek = DayOfWeek.from(temporal);
-        return weekEnds.contains(dayOfWeek);
-    }
-
-    boolean isHoliday(Temporal temporal) {
-        return holidays.stream().anyMatch(cl -> cl.compareTo(ChronoLocalDate.from(temporal)) == 0 );
+    private enum Direction{
+        NEXT(1), PREVIOUS(-1);
+        private final int amount;
+        Direction(int amount){
+            this.amount = amount;
+        }
     }
 }
