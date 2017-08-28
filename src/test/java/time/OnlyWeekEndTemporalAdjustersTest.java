@@ -19,8 +19,8 @@ public class OnlyWeekEndTemporalAdjustersTest {
     @Test
     public void previousHoliday() throws Exception {
         LocalDate friday = LocalDate.of(2017, 9, 29);
-        LocalDate nextDay = friday.with(temporalAdjusters.previousHoliday());
-        assertEquals(LocalDate.of(2017, 9, 24), nextDay);
+        LocalDate previousDay = friday.with(temporalAdjusters.previousHoliday());
+        assertEquals(LocalDate.of(2017, 9, 24), previousDay);
     }
 
     @Test
@@ -33,8 +33,8 @@ public class OnlyWeekEndTemporalAdjustersTest {
     @Test
     public void previousWorkingDay() throws Exception {
         LocalDate friday = LocalDate.of(2017, 9, 29);
-        LocalDate nextDay = friday.with(temporalAdjusters.previousWorkingDay());
-        assertEquals(LocalDate.of(2017, 9, 28), nextDay);
+        LocalDate previousDay = friday.with(temporalAdjusters.previousWorkingDay());
+        assertEquals(LocalDate.of(2017, 9, 28), previousDay);
     }
 
 

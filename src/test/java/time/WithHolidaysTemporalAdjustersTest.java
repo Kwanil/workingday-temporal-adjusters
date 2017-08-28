@@ -23,30 +23,30 @@ public class WithHolidaysTemporalAdjustersTest {
     
     @Test
     public void nextHoliday() throws Exception {
-        LocalDate friday = LocalDate.of(2017, 10, 2);
-        LocalDate nextDay = friday.with(temporalAdjusters.nextHoliday());
-        assertEquals(LocalDate.of(2017, 10, 3), nextDay);
+        LocalDate monday = LocalDate.of(2017, 10, 2);
+        LocalDate nationalFoundationDay = monday.with(temporalAdjusters.nextHoliday());
+        assertEquals(LocalDate.of(2017, 10, 3), nationalFoundationDay);
     }
 
     @Test
     public void previousHoliday() throws Exception {
-        LocalDate friday = LocalDate.of(2017, 10, 2);
-        LocalDate nextDay = friday.with(temporalAdjusters.previousHoliday());
-        assertEquals(LocalDate.of(2017, 10, 1), nextDay);
+        LocalDate monday = LocalDate.of(2017, 10, 2);
+        LocalDate sunday = monday.with(temporalAdjusters.previousHoliday());
+        assertEquals(LocalDate.of(2017, 10, 1), sunday);
     }
 
     @Test
     public void nextWorkingDay() throws Exception {
-        LocalDate friday = LocalDate.of(2017, 10, 2);
-        LocalDate nextDay = friday.with(temporalAdjusters.nextWorkingDay());
+        LocalDate monday = LocalDate.of(2017, 10, 2);
+        LocalDate nextDay = monday.with(temporalAdjusters.nextWorkingDay());
         assertEquals(LocalDate.of(2017, 10, 10), nextDay);
     }
 
     @Test
     public void previousWorkingDay() throws Exception {
-        LocalDate friday = LocalDate.of(2017, 10, 2);
-        LocalDate nextDay = friday.with(temporalAdjusters.previousWorkingDay());
-        assertEquals(LocalDate.of(2017, 9, 29), nextDay);
+        LocalDate monday = LocalDate.of(2017, 10, 2);
+        LocalDate previousDay = monday.with(temporalAdjusters.previousWorkingDay());
+        assertEquals(LocalDate.of(2017, 9, 29), previousDay);
     }
 
 }
