@@ -3,22 +3,25 @@ package time;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static time.Holidays.of;
 
 /**
  * Created by naver on 2017. 8. 7..
  */
 public class WithHolidaysTemporalAdjustersTest {
     WorkingDayTemporalAdjusters temporalAdjusters = WorkingDayTemporalAdjusters.withHolidays(
-            Arrays.asList(
-                    LocalDate.of(2017, 10, 3),//the National foundation Day
-                    LocalDate.of(2017, 10, 4),//Korean Thanksgiving Day
-                    LocalDate.of(2017, 10, 5),//Korean Thanksgiving Day
-                    LocalDate.of(2017, 10, 6),//Korean Thanksgiving Day
-                    LocalDate.of(2017, 10, 9) //Hangul Day
+        of(
+            asList(
+                LocalDate.of(2017, 10, 3),//the National foundation Day
+                LocalDate.of(2017, 10, 4),//Korean Thanksgiving Day
+                LocalDate.of(2017, 10, 5),//Korean Thanksgiving Day
+                LocalDate.of(2017, 10, 6),//Korean Thanksgiving Day
+                LocalDate.of(2017, 10, 9) //Hangul Day
             )
+        )
     );
     
     @Test

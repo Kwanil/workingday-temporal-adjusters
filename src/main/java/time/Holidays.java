@@ -6,7 +6,7 @@ import java.time.temporal.Temporal;
 import java.util.*;
 
 /**
- * Created by naver on 2017. 8. 8..
+ * Created by Kwanil-lee on 2017. 8. 8..
  */
 public final class Holidays {
     private static final List<DayOfWeek> WEEKENDS = Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
@@ -18,8 +18,7 @@ public final class Holidays {
     }
 
     private Holidays(Collection<? extends ChronoLocalDate> holidays) {
-        Objects.requireNonNull(holidays);
-        this.holidays.addAll(holidays);
+        this.holidays.addAll(Objects.requireNonNull(holidays));
     }
 
     public boolean isWorkingDay(Temporal temporal) {

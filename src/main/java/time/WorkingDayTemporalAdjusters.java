@@ -1,26 +1,27 @@
 package time;
 
-import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjuster;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+/**
+ * Created by Kwanil-lee on 2017. 8. 8..
+ */
 public class WorkingDayTemporalAdjusters {
     private final Holidays holidays;
 
-    private WorkingDayTemporalAdjusters(Collection<? extends ChronoLocalDate> holidays) {
-        this.holidays = Holidays.of(holidays);
+    private WorkingDayTemporalAdjusters(Holidays holidays) {
+        this.holidays = Objects.requireNonNull(holidays);
     }
 
     public static WorkingDayTemporalAdjusters onlyWeekEnd() {
-        return new WorkingDayTemporalAdjusters(Collections.emptyList());
+        return new WorkingDayTemporalAdjusters(Holidays.of(Collections.emptyList()));
     }
 
-    public static WorkingDayTemporalAdjusters withHolidays(Collection<? extends ChronoLocalDate> holidays){
+    public static WorkingDayTemporalAdjusters withHolidays(Holidays holidays) {
         return new WorkingDayTemporalAdjusters(holidays);
     }
 

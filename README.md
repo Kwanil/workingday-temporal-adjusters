@@ -30,19 +30,21 @@ public void onlyWeekEnd() throws Exception {
 </pre>
 
 
-- 추가 공휴일을 등록하고 평일/공휴일을 계산할때 WorkingDayTemporalAdjusters.withHolidays(Collection<? extends ChronoLocalDate> holidays)
+- 추가 공휴일을 등록하고 평일/공휴일을 계산할때 WorkingDayTemporalAdjusters.withHolidays(Holidays holidays)
 
 <pre>
 <code>
 @Test
 public void withHolidays() throws Exception {
     WorkingDayTemporalAdjusters adjusters = WorkingDayTemporalAdjusters.withHolidays(
-        asList(
-            LocalDate.of(2017, 10, 3),//the National foundation Day
-            LocalDate.of(2017, 10, 4),//Korean Thanksgiving Day
-            LocalDate.of(2017, 10, 5),//Korean Thanksgiving Day
-            LocalDate.of(2017, 10, 6),//Korean Thanksgiving Day
-            LocalDate.of(2017, 10, 9) //Hangul Day
+        Holidays.of(
+            asList(
+                LocalDate.of(2017, 10, 3),//the National foundation Day
+                LocalDate.of(2017, 10, 4),//Korean Thanksgiving Day
+                LocalDate.of(2017, 10, 5),//Korean Thanksgiving Day
+                LocalDate.of(2017, 10, 6),//Korean Thanksgiving Day
+                LocalDate.of(2017, 10, 9) //Hangul Day
+            )
         )
     );
     
